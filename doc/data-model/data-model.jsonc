@@ -1,0 +1,408 @@
+/* Grupo 3 - Professors */
+"Professors": [
+    {
+        "id": UUID(),
+        "matricula": "string",
+        "nome": "string",
+        "dataNascimento": ISODate(),
+        "certificacoes": [
+            Ref("Certifications","UUID(lookup->certificacao)),
+            ...
+        ],
+        "dataAdmissao": ISODate(),
+        "ativo": "boolean",
+        "identificacao": [
+            {
+                "tipo": "string",
+                "valor": "string"
+            }
+        ]
+    }
+]
+"Certifications": [
+    {
+        "id": "UUID",
+        "ano": "int",
+        "nivel": "string",
+        "descricao": "string"
+    }
+]
+/* Grupo 7 - Students */
+"Students": [
+    {
+        "id": UUID(),
+        "matricula": "2023001",
+        "nome": "João da Silva",
+        "email": "joao.silva@exemplo.com",
+        "curso": "Engenharia de Software",
+        "curriculo": {
+            "formacao": [
+                {
+                    "curso": "Ensino Médio",
+                    "instituicao": "Colégio XYZ",
+                    "conclusao": "2018"
+                },
+                {
+                    "curso": "Graduação",
+                    "instituicao": "Universidade ABC",
+                    "conclusao": "2022"
+                }
+            ],
+            "experiencia_profissional": [
+                {
+                    "cargo": "Estagiário de Desenvolvimento",
+                    "empresa": Ref("Companies", UUID("12345678901234")),
+                    "periodo": "01/2021 - 06/2021"
+                },
+                {
+                    "cargo": "Desenvolvedor Júnior",
+                    "empresa": Ref("Companies", UUID("54321678901234")),
+                    "periodo": "07/2021 - presente"
+                }
+            ]
+        }
+    }
+]
+"Companies": [
+    {
+        "cnpj": "12345678901234",
+        "nome": "Empresa X"
+    },
+    {
+        "cnpj": "54321678901234",
+        "nome": "Empresa Y"
+    }
+]
+/* Grupo 1 - Courses */
+"Courses": [
+    {
+        "id": UUID(),
+        "nome": "Construção de Software",
+        "codcred": "46504-04",
+        "cargaHoraria": 60,
+        "objetivos": [
+            "Compreender os principais conceitos envolvidos na construção de software",
+            "Aplicar técnicas de reutilização de software",
+            "Compreender os principais conceitos e técnicas da engenharia de software orientada a modelos"
+        ],
+        "ementa": "Visão geral sobre os fundamentos de construção de software.",
+        "unidades": [
+            {
+                "numero": 1,
+                "nome": "Fundamentos de Construção de Software",
+                "topicos": [
+                    {
+                        "numero": 1,
+                        "nome": "Complexidade do software"
+                    },
+                    {
+                        "numero": 2,
+                        "nome": "Mudança de software: técnicas de apoio"
+                    }
+                ]
+            },
+            {
+                "numero": 2,
+                "nome": "Reutilização de Software",
+                "topicos": [
+                    {
+                        "numero": 1,
+                        "nome": "Conceitos Básicos"
+                    },
+                    {
+                        "numero": 2,
+                        "nome": "Engenharia de Domínio"
+                    }
+                ]
+            }
+        ],
+        "bibliografia": [
+            {
+                "autor": "Fulano",
+                "titulo": "Software",
+                "tipoPublicacao": Ref("TiposPublicacoes","E747-RE985-9QWE4-RE15Q")
+            },
+            {
+                "autor": "Beltrano",
+                "titulo": "SWEBOK",
+                "tipoPublicacao": Ref("TiposPublicacoes","RR74-RE985-9QWE4-F5D97")
+            }
+        ]
+    }
+]
+"TiposPublicacoes": [
+    {
+        "id": UUID("E747-RE985-9QWE4-RE15Q"),
+        "tipo": "Livro"
+    },
+    {
+        "id": UUID("E747-RE985-9QWE4-RE15Q"),
+        "tipo": "Artigo"
+    },
+    {
+        "id": UUID("RR74-RE985-9QWE4-F5D97"),
+        "tipo": "Manual"
+    }
+]
+/* Grupo 6 - Turmas */
+"Classes": [
+    {
+        "id": UUID(),
+        "numClass": 123,
+        "year": 2023,
+        "semester": 1,
+        "schedule": [
+            {
+                "weekDay": 2,
+                "schedule": "LM"
+            },
+            {
+                "weekDay": 4,
+                "schedule": "LM"
+            }
+        ],
+        "shift": Ref("Shifts","ID-1234")
+    }
+]
+"Shifts": [
+    {
+        "id": UUID("ID-1234"),
+        "period": "Noite"
+    }
+]
+/* Grupo 2 - Lessons */
+"Lessons": [
+    {
+        "id": UUID(68b18dcc-3277-41cf-ae13-7119f00aac18),
+        "data": "15/05/2023",
+        "hora": "19:15:00",
+        "sala": 412,
+        "conteudos": [
+            {
+                "nome": "Construção de API de backend.",
+                "modalidade": Ref("Modalidades",UUID("c9854a60-0347-4e99-9441-b3b520be5e04"))
+            }
+        ]
+    }
+],
+"LessonTypes": [
+    {
+        "id": UUID(50ec9241-1689-4626-b53f-54d24abb21ca),
+        "descrição": "Aula Teorica"
+    },
+    {
+        "id": UUID(c9854a60-0347-4e99-9441-b3b520be5e04),
+        "descrição": "Aula Prática"
+    }
+]
+/* Grupo 4 - Resources */
+"Resources": [
+    {
+        "id": UUID(),
+        "descricao": "Notebook Dell Optiplex 7010",
+        "idTipo": Ref("ResourceTypes",UUID()),
+        "idFabricante": Ref("Manufacturers",UUID()),
+        "configuracoes": [
+            {
+                "componente": "processador",
+                "descricao": "Intel Core i5"
+            },
+            {
+                "componente": "memoria_ram",
+                "descricao": "8GB DDR4"
+            },
+            {
+                "componente": "armazenamento",
+                "descricao": "1TB HDD"
+            },
+            {
+                "componente": "placa_de_video",
+                "descricao": "Nvidia GTX 1050 Ti"
+            },
+            {
+                "componente": "sistema_operacional",
+                "descricao": "Windows 10 Home"
+            }
+        ]
+    },
+    {
+        "idRecurso": 2,
+        "descricao": "Projetor Epson",
+        "idTipo": 4,
+        "idFabricante": 2,
+        "configuracoes": [
+            {
+                "componente": "resolucao",
+                "descricao": "1024x768"
+            },
+            {
+                "componente": "luminosidade",
+                "descricao": "3600 lumens"
+            },
+            {
+                "componente": "tecnologia",
+                "descricao": "3LCD"
+            }
+        ]
+    },
+    {
+        "idRecurso": 4,
+        "descricao": "Aparelho de som Sony",
+        "idTipo": 3,
+        "idFabricante": 5,
+        "configuracoes": [
+            {
+                "componente": "potencia",
+                "descricao": "50W RMS"
+            },
+            {
+                "componente": "conectividade",
+                "descricao": "Bluetooth, NFC, USB, CD, FM/AM"
+            },
+            {
+                "componente": "funcoes",
+                "descricao": "Equalizador, Sleep Timer, Party Chain, Mega Bass"
+            }
+        ]
+    },
+    {
+        "idRecurso": 5,
+        "descricao": "Televisao Samsung 55 polegadas",
+        "idTipo": 2,
+        "idFabricante": 3,
+        "configuracoes": [
+            {
+                "componente": "tamanho_da_tela",
+                "descricao": "55 polegadas"
+            },
+            {
+                "componente": "resolucao",
+                "descricao": "4K Ultra HD"
+            },
+            {
+                "componente": "tecnologia",
+                "descricao": "QLED"
+            },
+            {
+                "componente": "conectividade",
+                "descricao": "Wi-Fi, Bluetooth, HDMI"
+            },
+            {
+                "componente": "audio",
+                "descricao": "Som surround"
+            }
+        ]
+    },
+    {
+        "idRecurso": 6,
+        "descricao": "Microfone de mesa Samson Q2U",
+        "idTipo": 3,
+        "idFabricante": 6,
+        "configuracoes": [
+            {
+                "componente": "tipo_de_conexao",
+                "descricao": "USB ou XLR"
+            },
+            {
+                "componente": "frequencia_de_resposta",
+                "descricao": "50Hz-15kHz"
+            }
+        ]
+    }
+]
+"ResourceTypes": [
+    {
+        "id": UUID(),
+        "nome": "Computador"
+    },
+    {
+        "id": 2,
+        "nome": "Monitores/Televisores"
+    },
+    {
+        "id": 3,
+        "nome": "Equipamentos de Som"
+    },
+    {
+        "id": 4,
+        "nome": "Uso Geral"
+    }
+]
+"Manufacturers": [
+    {
+        "id": UUID(),
+        "nome": "Dell"
+    },
+    {
+        "id": 2,
+        "nome": "Sony"
+    },
+    {
+        "id": 3,
+        "nome": "Epson",
+        "endereco": "endereco_fabricante_2"
+    }
+    {
+        "id": 4,
+        "nome": "HP"
+    },
+    {
+        "id": 5,
+        "nome": "Samsung"
+    },
+    {
+        "id": 6,
+        "nome": "Samson"
+    }
+]
+/* Grupo 5 - Rooms */
+"Rooms": [
+    {
+        "id": UUID("1c07ac07-7923-4ce8-b95b-644f63190b5b"),
+        "name": "Sala 101",
+        "capacity": 20,
+        "floor": 1,
+        "resources": [
+            "projetor",
+            "mesa",
+            "cadeiras"
+        ],
+        "building_id": Ref("building", UUID("81c1d9ac-e485-11ed-b5ea-0242ac120002"))
+    }
+]
+"Buildings": [
+    {
+        "id": UUID("81c1d9ac-e485-11ed-b5ea-0242ac120002"),
+        "building_num": 1,
+        "name": "Prédio Central",
+        "campus": "Campus Universitário"
+    }
+]
+/* Grupo 8 - Reservations */
+"Reservations": [
+    {
+        "id": UUID(),
+        "resourceId": Ref("Resources",UUID("1a1e51f1-8bc0-474b-acbd-53881f81784f")),
+        "horario": [
+            {
+                "day": "22-04-2023",
+                "hour": "LM",
+                "shift": "Matutino"
+            }
+        ],
+        "horarioInicioReserva": [
+            {
+                "day": "12-04-2023",
+                "hour": "20:45",
+                "shift": "Matutino"
+            }
+        ],
+        "horarioFimReserva": [
+            {
+                "day": "12-04-2023",
+                "hour": "20:45",
+                "shift": "Matutino"
+            }
+        ]
+    }
+]
