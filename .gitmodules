@@ -1,0 +1,6 @@
+[submodule "oauth"]
+	path = oauth
+	url = https://github.com/constr-sw-2023-1/oauth-g4.git
+[submodule "frontend"]
+	path = frontend
+	url = https://github.com/constr-sw-2023-1/frontend.git

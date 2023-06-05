@@ -1,14 +1,7 @@
-FROM jboss/keycloak:latest
+FROM redhat/ubi9:9.1.0 AS ubi9
 
-ADD . /tmp
+RUN dnf install --installroot /mnt/rootfs curl --releasever 9 --setopt install_weak_deps=false --nodocs -y; dnf --installroot /mnt/rootfs clean all
 
-ENV KEYCLOAK_USER=admin
-ENV KEYCLOAK_PASSWORD=a12345678
-ENV KEYCLOAK_FRONTEND_URL=http://localhost:8090/auth
+FROM quay.io/keycloak/keycloak:21.0.2
 
-
-# RUN /opt/jboss/keycloak/bin/standalone.sh \
-#     -Dkeycloak.migration.action=export \
-#     -Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.file=/tmp/constr-sw-2023-1.json \
-#     -Dkeycloak.migration.realmName=Constr-sw-2023-1 \
-#     -Dkeycloak.migration.usersExportStrategy=REALM_FILE
+COPY --from=ubi9 /mnt/rootfs /
