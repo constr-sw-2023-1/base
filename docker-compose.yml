@@ -1,6 +1,11 @@
 version: '3.4'
 networks:
   constr-sw-2023-1:
+volumes:
+  constr-sw-2023-1-mongodb-data:
+    external: true
+  constr-sw-2023-1-postgres-data:
+    external: true
 services:
   # Keycloak
   keycloak:
@@ -14,6 +19,7 @@ services:
       - KEYCLOAK_PASSWORD=a12345678
       - KEYCLOAK_FRONTEND_URL=http://localhost:8090
       - KC_HEALTH_ENABLED=true
+    restart: always
     volumes:
       - ./oauth/src/main/resources/keycloak_data:/opt/jboss/keycloak/standalone/data
       - ./oauth/src/main/resources/keycloak_data:/opt/keycloak/data/import
@@ -34,10 +40,10 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - KEYCLOAK_CLIENT_ID=oauth
-      - KEYCLOAK_CLIENT_SECRET=04bfUatIDO6ipwg1TF2mTzHrX8UZD02Z
-      - KEYCLOAK_REALM=construcao-sw
-      - KEYCLOAK_REALM_URL=http://keycloak:8080
+      - KEYCLOAK_CLIENT_ID={KEYCLOAK_CLIENT_ID}
+      - KEYCLOAK_CLIENT_SECRET={KEYCLOAK_CLIENT_SECRET}
+      - KEYCLOAK_REALM={KEYCLOAK_REALM}
+      - KEYCLOAK_REALM_URL={KEYCLOAK_REALM_URL}
     networks:
       - constr-sw-2023-1
     depends_on:
@@ -50,12 +56,91 @@ services:
     #   interval: 10s
     #   timeout: 10s
     #   retries: 5
-  # Grupo 1 - Backend Courses
-  # Grupo 2 - Backend Lessons
-  # Grupo 3 - Backend Professors
-  # Grupo 4 - Backend Resources
-  # Grupo 5 - Backend Rooms
-  # Grupo 6 - Backend Classes
-  # Grupo 7 - Backend Students
-  # Grupo 8 - Backend Reservations
+  # Sistemas de Gerência de Bancos de Dados
+  # MongoDB
+  mongodb:
+    container_name: mongodb
+    image: mongo:latest
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME={MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD={MONGO_INITDB_ROOT_PASSWORD}
+    healthcheck:
+        test: echo 'db.runCommand("ping").ok' | mongosh {MONGO_HOST}:{MONGO_PORT}/test --quiet
+        interval: 10s
+        timeout: 10s
+        retries: 5
+    networks:
+      - constr-sw-2023-1
+    volumes:
+      - constr-sw-2023-1-mongodb-data:/data/db
+  # Postgres
+  postgres:
+    container_name: postgres
+    image: postgres:alpine3.18
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=backend
+    volumes:
+      - constr-sw-2023-1-postgres-data:/var/lib/postgresql/data
+    networks:
+      - constr-sw-2023-1
+  # Backend
+  # Grupo 1 - Courses
+  backend-courses:
+    container_name: backend-courses
+    build:
+      context: ./backend/courses/.
+      dockerfile: Dockerfile
+    ports:
+      - 8081:8081
+    environment:
+      - SERVER_PORT=8081
+      - MONGO_HOST=mongodb
+      - MONGO_PORT=27017
+      - MONGO_USERNAME=root
+      - MONGO_PASSWORD=root
+      - MONGO_AUTHENTICATION_DATABASE=admin
+      - MONGO_DATABASE=courses
+      - MONGO_UUID_REPRESENTATION=standard
+      # - KEYCLOAK_REALM_URL=http://keycloak:8080
+      # - KEYCLOAK_CLIENT_ID=oauth
+      # - KEYCLOAK_CLIENT_SECRET=04bfUatIDO6ipwg1TF2mTzHrX8UZD02Z
+      # - KEYCLOAK_REALM_NAME=construcao-sw
+      # - KEYCLOAK_GRANT_TYPE=password
+    networks:
+      - constr-sw-2023-1
+    links:
+      - mongodb
+    restart: always
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      oauth:
+        condition: service_started
+  # Grupo 2 - Lessons
+  backend-lessons:
+    container_name: backend-lessons
+    build:
+      context: ./backend/lessons
+      dockerfile: DockerFile
+    ports:
+      - 8082:8000
+    networks:
+      - constr-sw-2023-1
+    depends_on:
+      postgres:
+        condition: service_started
+  # Grupo 3 - Professors
+  # Grupo 4 - Resources
+  # Grupo 5 - Rooms
+  # Grupo 6 - Classes
+  # Grupo 7 - Students
+  # Grupo 8 - Reservations
+  # Frontend
 
