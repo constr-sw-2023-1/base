@@ -50,3 +50,12 @@ services:
     #   interval: 10s
     #   timeout: 10s
     #   retries: 5
+  # Grupo 1 - Backend Courses
+  # Grupo 2 - Backend Lessons
+  # Grupo 3 - Backend Professors
+  # Grupo 4 - Backend Resources
+  # Grupo 5 - Backend Rooms
+  # Grupo 6 - Backend Classes
+  # Grupo 7 - Backend Students
+  # Grupo 8 - Backend Reservations
+

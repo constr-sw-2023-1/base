@@ -4,3 +4,27 @@
 [submodule "frontend"]
 	path = frontend
 	url = https://github.com/constr-sw-2023-1/frontend.git
+[submodule "backend-courses"]
+	path = backend/courses
+	url = https://github.com/constr-sw-2023-1/backend-g1.git
+[submodule "backend-lessons"]
+	path = backend/lessons
+	url = https://github.com/constr-sw-2023-1/backend-g2.git
+[submodule "backend-professors"]
+	path = backend/professors
+	url = https://github.com/constr-sw-2023-1/backend-g3.git
+[submodule "backend-resources"]
+	path = backend/resources
+	url = https://github.com/constr-sw-2023-1/backend-g4.git
+[submodule "backend-rooms"]
+	path = backend/rooms
+	url = https://github.com/constr-sw-2023-1/backend-g5.git
+[submodule "backend-classes"]
+	path = backend/classes
+	url = https://github.com/constr-sw-2023-1/backend-g6.git
+[submodule "backend-students"]
+	path = backend/students
+	url = https://github.com/constr-sw-2023-1/backend-g7.git
+[submodule "backend-reservations"]
+	path = backend/reservations
+	url = https://github.com/constr-sw-2023-1/backend-g8.git
