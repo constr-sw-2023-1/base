@@ -40,10 +40,10 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - KEYCLOAK_CLIENT_ID={KEYCLOAK_CLIENT_ID}
-      - KEYCLOAK_CLIENT_SECRET={KEYCLOAK_CLIENT_SECRET}
-      - KEYCLOAK_REALM={KEYCLOAK_REALM}
-      - KEYCLOAK_REALM_URL={KEYCLOAK_REALM_URL}
+      - KEYCLOAK_CLIENT_ID=${KEYCLOAK_CLIENT_ID}
+      - KEYCLOAK_CLIENT_SECRET=${KEYCLOAK_CLIENT_SECRET}
+      - KEYCLOAK_REALM=${KEYCLOAK_REALM}
+      - KEYCLOAK_REALM_URL=${KEYCLOAK_REALM_URL}
     networks:
       - constr-sw-2023-1
     depends_on:
@@ -65,8 +65,8 @@ services:
     ports:
       - "27017:27017"
     environment:
-      - MONGO_INITDB_ROOT_USERNAME={MONGO_INITDB_ROOT_USERNAME}
-      - MONGO_INITDB_ROOT_PASSWORD={MONGO_INITDB_ROOT_PASSWORD}
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
     healthcheck:
         test: echo 'db.runCommand("ping").ok' | mongosh {MONGO_HOST}:{MONGO_PORT}/test --quiet
         interval: 10s
