@@ -1,4 +1,4 @@
-version: '3.4'
+version: '3.5'
 networks:
   constr-sw-2023-1:
 volumes:
@@ -68,7 +68,7 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
     healthcheck:
-        test: echo 'db.runCommand("ping").ok' | mongosh {MONGO_HOST}:{MONGO_PORT}/test --quiet
+        test: echo 'db.runCommand("ping").ok' | mongosh ${MONGO_HOST}:${MONGO_PORT}/test --quiet
         interval: 10s
         timeout: 10s
         retries: 5
@@ -138,6 +138,33 @@ services:
         condition: service_started
   # Grupo 3 - Professors
   # Grupo 4 - Resources
+  backend-resources:
+    depends_on:
+      - mongodb
+      - keycloak
+      - oauth
+    container_name: resources-service
+    image: ghcr.io/constr-sw-2023-1/backend-g4:latest
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8084/actuator/health"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+    ports:
+      - "8084:8084"
+    environment:
+      - MONGODB_HOST=mongodb
+      - MONGODB_PORT=${MONGO_PORT}
+      - MONGODB_DATABASE=resources
+      - MONGODB_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGODB_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - KEYCLOAK_CLIENT_ID=${KEYCLOAK_CLIENT_ID}
+      - KEYCLOAK_CLIENT_SECRET=${KEYCLOAK_CLIENT_SECRET}
+      - KEYCLOAK_REALM=${KEYCLOAK_REALM}
+      - KEYCLOAK_REALM_URL=${KEYCLOAK_REALM_URL}
+    networks:
+      - constr-sw-2023-1
   # Grupo 5 - Rooms
   # Grupo 6 - Classes
   # Grupo 7 - Students
