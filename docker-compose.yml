@@ -137,6 +137,21 @@ services:
       postgres:
         condition: service_started
   # Grupo 3 - Professors
+  backend-professors:
+    depends_on:
+      - postgres
+      - keycloak
+      - oauth
+    container_name: professors-service
+    build:
+      context: ./backend/professors
+      dockerfile: DockerFile
+    networks:
+      - constr-sw-2023-1
+    ports:
+      - 8083:8083
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/backend?user=root&password=root
   # Grupo 4 - Resources
   backend-resources:
     depends_on:
