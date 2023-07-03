@@ -183,6 +183,18 @@ services:
   # Grupo 5 - Rooms
   # Grupo 6 - Classes
   # Grupo 7 - Students
+  backend-students:
+    depends_on: 
+      - postgres
+    container_name: backend-students
+    build:
+      context: ./backend/students/.
+      dockerfile: Dockerfile
+    networks:
+      - constr-sw-2023-1
+    ports:
+      - 8080:8080
+
   # Grupo 8 - Reservations
   backend-reservations:
     container_name: backend-reservations
