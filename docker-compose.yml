@@ -127,7 +127,7 @@ services:
   backend-lessons:
     container_name: backend-lessons
     build:
-      context: ./backend/lessons
+      context: ./backend/lessons/.
       dockerfile: DockerFile
     ports:
       - 8082:8000
@@ -144,8 +144,8 @@ services:
       - oauth
     container_name: professors-service
     build:
-      context: ./backend/professors
-      dockerfile: DockerFile
+      context: ./backend/professors/.
+      dockerfile: Dockerfile
     networks:
       - constr-sw-2023-1
     ports:
