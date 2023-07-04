@@ -10,8 +10,9 @@ services:
   # Keycloak
   keycloak:
     container_name: keycloak
-    build: ./resources/keycloak/.
-    image: constr-sw-2023-1/keycloak:latest
+    build:
+      context: ./resources/keycloak/.
+      dockerfile: Dockerfile
     ports:
       - 8090:8080
     environment:
@@ -26,17 +27,18 @@ services:
     networks:
       - constr-sw-2023-1
     command: start-dev --import-realm
-    # healthcheck:
-    #      test: [ "CMD-SHELL", "curl -f http://localhost:8090/health || exit 1" ]
-    #      start_period: 120s
-    #      interval: 10s
-    #      timeout: 10s
-    #      retries: 5
+    healthcheck:
+          test: [ "CMD-SHELL", "curl -f http://localhost:8080/health || exit 1" ]
+          start_period: 120s
+          interval: 10s
+          timeout: 10s
+          retries: 5
   # OAuth
   oauth:
     container_name: oauth
-    build: ./oauth/.
-    image: constr-sw-2023-1/oauth:latest
+    build:
+      context: ./oauth/.
+      dockerfile: Dockerfile
     ports:
       - "8080:8080"
     environment:
@@ -47,15 +49,14 @@ services:
     networks:
       - constr-sw-2023-1
     depends_on:
-      - keycloak
-      # keycloak:
-      #   condition: service_healthy
-    # healthcheck:
-    #   test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
-    #   start_period: 20s
-    #   interval: 10s
-    #   timeout: 10s
-    #   retries: 5
+      keycloak:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      start_period: 20s
+      interval: 10s
+      timeout: 10s
+      retries: 5
   # Sistemas de Gerência de Bancos de Dados
   # MongoDB
   mongodb:
@@ -159,7 +160,9 @@ services:
       - keycloak
       - oauth
     container_name: resources-service
-    image: ghcr.io/constr-sw-2023-1/backend-g4:latest
+    build:
+      context: ./backend/resources/.
+      dockerfile: Dockerfile
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8084/actuator/health"]
       interval: 10s
@@ -199,4 +202,3 @@ services:
       mongodb:
         condition: service_started
   # Frontend
-
