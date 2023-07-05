@@ -36,8 +36,9 @@ services:
   # OAuth
   oauth:
     container_name: oauth
-    build: ./oauth/.
-    image: constr-sw-2023-1/oauth:latest
+    build:
+      context: ./oauth/.
+      dockerfile: Dockerfile
     ports:
       - "8080:8080"
     environment:
@@ -159,7 +160,9 @@ services:
       - keycloak
       - oauth
     container_name: resources-service
-    image: ghcr.io/constr-sw-2023-1/backend-g4:latest
+    build:
+      context: ./backend/resources/.
+      dockerfile: Dockerfile
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8084/actuator/health"]
       interval: 10s
